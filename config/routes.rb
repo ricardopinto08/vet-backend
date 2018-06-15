@@ -4,7 +4,9 @@ Rails.application.routes.draw do
     resource :horses
   end
 
-  resource :users
+  devise_for :users, controllers: {
+           registrations: 'api/v1/users/registrations',
+  }, skip: [:sessions, :password]
 
   scope :api, defaults: {format: :json} do
     resources :examples

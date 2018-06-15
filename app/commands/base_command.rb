@@ -2,8 +2,6 @@ class BaseCommand
   attr_reader :result
 
   def self.call(*args)
-    puts '---------------'
-    puts *args
     new(*args).call
   end
 
