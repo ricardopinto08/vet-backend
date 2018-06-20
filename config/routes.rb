@@ -3,6 +3,8 @@ Rails.application.routes.draw do
     resource :auth, only: %i[create]
     resource :horses
     resource :users
+    resource :clients
+    resource :vets
   end
 
 

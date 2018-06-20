@@ -1,0 +1,2 @@
+class Vet < User
+end
