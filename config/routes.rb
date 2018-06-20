@@ -2,11 +2,9 @@ Rails.application.routes.draw do
   namespace :v1 do
     resource :auth, only: %i[create]
     resource :horses
+    resource :users
   end
 
-  devise_for :users, controllers: {
-           registrations: 'api/v1/users/registrations',
-  }, skip: [:sessions, :password]
 
   scope :api, defaults: {format: :json} do
     resources :examples
