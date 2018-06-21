@@ -25,6 +25,8 @@ class V1::UsersController < ApplicationController
 
   # PATCH/PUT /users/1
   def update
+    puts user_params
+    puts "----------------"
     if @user.update(user_params)
       render json: @user
     else
@@ -40,7 +42,7 @@ class V1::UsersController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
-      @user = User.find(params[:id])
+      @user = User.find_by_email(params[:email])
     end
 
     # Only allow a trusted parameter "white list" through.
