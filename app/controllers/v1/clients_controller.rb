@@ -1,5 +1,5 @@
 class V1::ClientsController < ApplicationController
-  before_action :set_user, only: [:update, :destroy]
+  before_action :set_user, only: [:addVet, :update, :getHorses, :destroy]
 
   # GET /clients
   def index
@@ -37,10 +37,20 @@ class V1::ClientsController < ApplicationController
     @client.destroy
   end
 
+  def addVet
+    @vet = Vet.find_by_email(params[:emailVet])
+    @client.vets << @vet
+  end
+
+  def getHorses
+    @horses = @client.horses
+    render json: @horses, status: :ok
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
-      @client = Client.find(params[:id])
+      @client = Client.find_by_email(params[:email])
     end
 
     # Only allow a trusted parameter "white list" through.

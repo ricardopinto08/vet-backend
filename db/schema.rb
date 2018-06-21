@@ -10,10 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_06_20_204612) do
+ActiveRecord::Schema.define(version: 2018_06_21_160040) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "audits", force: :cascade do |t|
+    t.bigint "horse_id"
+    t.bigint "vet_id"
+    t.datetime "startDate"
+    t.datetime "endDate"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["horse_id"], name: "index_audits_on_horse_id"
+    t.index ["vet_id"], name: "index_audits_on_vet_id"
+  end
 
   create_table "clients", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -33,6 +44,17 @@ ActiveRecord::Schema.define(version: 2018_06_20_204612) do
     t.index ["jti"], name: "index_jwt_blacklists_on_jti"
   end
 
+  create_table "owners", force: :cascade do |t|
+    t.bigint "horse_id"
+    t.bigint "client_id"
+    t.datetime "startDate"
+    t.datetime "endDate"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["client_id"], name: "index_owners_on_client_id"
+    t.index ["horse_id"], name: "index_owners_on_horse_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -50,8 +72,6 @@ ActiveRecord::Schema.define(version: 2018_06_20_204612) do
     t.string "name"
     t.string "lastname"
     t.string "type"
-    t.string "password_reset_token"
-    t.datetime "password_reset_sent_at"
     t.index ["authentication_token"], name: "index_users_on_authentication_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

@@ -1,5 +1,5 @@
 class V1::VetsController < ApplicationController
-  before_action :set_user, only: [:update, :destroy]
+  before_action :set_user, only: [:getHorses, :show, :update, :destroy]
 
   # GET /vets
   def index
@@ -9,7 +9,6 @@ class V1::VetsController < ApplicationController
 
   # GET /vets/1
   def show
-    @vets = Vet.all
     render json: @vets, status: :ok
   end
 
@@ -32,16 +31,24 @@ class V1::VetsController < ApplicationController
     end
   end
 
+
+  def getHorses
+    @horses = @vet.horses
+    render json: @horses, status: :ok
+  end
+
   # DELETE /vets/1
   def destroy
     @vet.destroy
   end
 
+  def set_user
+    @vet = Vet.find(params[:id])
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
-    def set_user
-      @vet = Vet.find(params[:id])
-    end
+
 
     # Only allow a trusted parameter "white list" through.
     def user_params
