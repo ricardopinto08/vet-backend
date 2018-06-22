@@ -1,5 +1,5 @@
 class V1::HorsesController < ApplicationController
-  before_action :set_user, only: [:getCurrentOwner, :getVets, :getClients, :show, :destroy]
+  before_action :set_user, only: [:changeVet, :sell, :getCurrentOwner, :getVets, :getClients, :show, :destroy]
 
   def index
     @horses =Horse.all
@@ -22,18 +22,39 @@ class V1::HorsesController < ApplicationController
   end
 
   def getCurrentOwner
-    puts "----------------"
-    @owner = Owner.where(horse_id => params[:id])
-    puts @owner.client_id
+    @owners = Owner.where(horse_id:params[:id])
+    @owner = @owners.sort_by &:created_at
+    @client = Client.find(@owner.last.client_id)
+    render json: @client, status: :created
   end
 
   def getCurrentVet
+    @audits = Audit.where(horse_id:params[:id])
+    @audit = @audits.sort_by &:created_at
+    @vet = Vet.find(@audit.last.vet_id)
+    render json: @vet, status: :created
   end
 
   def sell
+    @owners = Owner.where(horse_id:params[:id])
+    @sorted = @owners.sort_by &:created_at
+    @owner = @sorted.last
+    @owner.endDate=Time.now
+    @owner.save
+    @client = Client.find_by_email(params[:emailClient])
+    @horse.clients << @client
+    render json: @client, status: :created
   end
 
   def changeVet
+    @audits = Audit.where(horse_id:params[:id])
+    @sorted = @audits.sort_by &:created_at
+    @audit = @sorted.last
+    @audit.endDate=Time.now
+    @audit.save
+    @vet = Vet.find_by_email(params[:emailVet])
+    @horse.vets << @vet
+    render json: @vet, status: :created
   end
 
   def destroy

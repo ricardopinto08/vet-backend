@@ -5,7 +5,12 @@ module V1
       token_command = AuthenticateUserCommand.call(*params.slice(:user, :password).values)
 
       if token_command.success?
-        render json: { token: token_command.result }
+        @user = User.find_by_email(params[:user])
+        render json: {
+           token: token_command.result,
+           type: @user.type,
+           user: @user
+         }
       else
         render json: { error: token_command.errors }, status: :unauthorized
       end
