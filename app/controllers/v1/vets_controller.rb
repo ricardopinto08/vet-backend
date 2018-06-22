@@ -33,8 +33,9 @@ class V1::VetsController < ApplicationController
 
 
   def getHorses
-    @horses = @vet.horses
-    render json: @horses, status: :ok
+    sql = "SELECT * FROM horses INNER JOIN audits ON horses.id = audits.horse_id WHERE audits.end_date IS NULL AND audits.vet_id = "+params[:id]
+    @horses = ActiveRecord::Base.connection.execute(sql)
+    render json: @horses, status: :created
   end
 
   # DELETE /vets/1

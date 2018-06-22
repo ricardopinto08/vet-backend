@@ -39,7 +39,7 @@ class V1::HorsesController < ApplicationController
     @owners = Owner.where(horse_id:params[:id])
     @sorted = @owners.sort_by &:created_at
     @owner = @sorted.last
-    @owner.endDate=Time.now
+    @owner.end_date=Time.now
     @owner.save
     @client = Client.find_by_email(params[:emailClient])
     @horse.clients << @client
@@ -50,7 +50,7 @@ class V1::HorsesController < ApplicationController
     @audits = Audit.where(horse_id:params[:id])
     @sorted = @audits.sort_by &:created_at
     @audit = @sorted.last
-    @audit.endDate=Time.now
+    @audit.end_date=Time.now
     @audit.save
     @vet = Vet.find_by_email(params[:emailVet])
     @horse.vets << @vet

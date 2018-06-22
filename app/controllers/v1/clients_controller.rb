@@ -43,14 +43,15 @@ class V1::ClientsController < ApplicationController
   end
 
   def getHorses
-    @horses = @client.horses
-    render json: @horses, status: :ok
+    sql = "SELECT * FROM horses INNER JOIN owners ON horses.id = owners.horse_id WHERE owners.end_date IS NULL AND owners.client_id = "+params[:id]
+    @horses = ActiveRecord::Base.connection.execute(sql)
+    render json: @horses, status: :created
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
-      @client = Client.find_by_email(params[:email])
+      @client = Client.find(params[:id])
     end
 
     # Only allow a trusted parameter "white list" through.

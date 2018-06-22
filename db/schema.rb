@@ -18,7 +18,7 @@ ActiveRecord::Schema.define(version: 2018_06_21_160040) do
   create_table "audits", force: :cascade do |t|
     t.bigint "horse_id"
     t.bigint "vet_id"
-    t.datetime "endDate"
+    t.datetime "end_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["horse_id"], name: "index_audits_on_horse_id"
@@ -46,7 +46,7 @@ ActiveRecord::Schema.define(version: 2018_06_21_160040) do
   create_table "owners", force: :cascade do |t|
     t.bigint "horse_id"
     t.bigint "client_id"
-    t.datetime "endDate"
+    t.datetime "end_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["client_id"], name: "index_owners_on_client_id"
