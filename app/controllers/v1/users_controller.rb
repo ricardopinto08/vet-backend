@@ -1,6 +1,6 @@
 class V1::UsersController < ApplicationController
   before_action :set_user, only: [:show, :update, :destroy]
-
+  #skip_before_action :verify_authenticity_token
   # GET /users
   def index
     @users = User.all
@@ -24,6 +24,7 @@ class V1::UsersController < ApplicationController
 
   # PATCH/PUT /users/1
   def update
+    puts "---------------"
     if @user.update(user_params)
       render json: @user
     else

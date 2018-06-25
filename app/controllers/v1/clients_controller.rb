@@ -48,6 +48,12 @@ class V1::ClientsController < ApplicationController
     render json: @horses, status: :created
   end
 
+  def getVets
+    sql = "SELECT v.id, v.email, v.name, v.lastname FROM audits as a INNER JOIN owners as o ON a.horse_id = o.horse_id INNER JOIN users as v ON v.id=a.vet_id WHERE a.end_date IS NULL AND o.client_id = "+params[:id]
+    @vets = ActiveRecord::Base.connection.execute(sql)
+    render json: @vets, status: :created
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user

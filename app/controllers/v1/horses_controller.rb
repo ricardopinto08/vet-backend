@@ -12,6 +12,7 @@ class V1::HorsesController < ApplicationController
   end
 
   def create
+    puts "|||||||||||"
     @horse = Horse.new(horse_params)
     @vet = Vet.find_by_email(params[:emailVet])
     @client = Client.find_by_email(params[:emailClient])
@@ -39,22 +40,26 @@ class V1::HorsesController < ApplicationController
     @owners = Owner.where(horse_id:params[:id])
     @sorted = @owners.sort_by &:created_at
     @owner = @sorted.last
-    @owner.end_date=Time.now
-    @owner.save
-    @client = Client.find_by_email(params[:emailClient])
-    @horse.clients << @client
-    render json: @client, status: :created
+    if @owner.client_id != params[:emailClient]
+      @owner.end_date=Time.now
+      @owner.save
+      @client = Client.find_by_email(params[:emailClient])
+      @horse.clients << @client
+      render json: @client, status: :created
+    end
   end
 
   def changeVet
     @audits = Audit.where(horse_id:params[:id])
     @sorted = @audits.sort_by &:created_at
     @audit = @sorted.last
-    @audit.end_date=Time.now
-    @audit.save
-    @vet = Vet.find_by_email(params[:emailVet])
-    @horse.vets << @vet
-    render json: @vet, status: :created
+    if @audit.vet_id != params[:emailVet]
+      @audit.end_date=Time.now
+      @audit.save
+      @vet = Vet.find_by_email(params[:emailVet])
+      @horse.vets << @vet
+      render json: @vet, status: :created
+    end
   end
 
   def destroy
@@ -82,7 +87,7 @@ class V1::HorsesController < ApplicationController
   end
 
   def horse_params
-    params.permit(:name, :born_date)
+    params.require(:horse).permit(:name, :born_date, :emailVet, :emailClient)
   end
 
 end

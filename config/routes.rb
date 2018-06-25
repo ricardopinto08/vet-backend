@@ -9,13 +9,14 @@ Rails.application.routes.draw do
       get '/:id/getCurrentVet' => 'horses#getCurrentVet', as: 'getCurrentVet'
       get '/' => 'horses#index', as: 'horses'
       post '/:id/sell' => 'horses#sell', as: 'sell'
-      post '/:id/changeVet' => 'horses#changeVet', as: 'changeVet'    
+      post '/:id/changeVet' => 'horses#changeVet', as: 'changeVet'
     end
     resource :users do
       get '/' => 'users#index', as: 'users'
     end
     resource :clients do
       get '/:id/gethorses' => 'clients#getHorses', as: 'horse'
+      get '/:id/getVets' => 'clients#getVets', as: 'getVets'
       get '/' => 'clients#index', as: 'clients'
     end
     resource :vets do
