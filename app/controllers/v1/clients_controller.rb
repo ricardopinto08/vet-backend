@@ -49,7 +49,7 @@ class V1::ClientsController < ApplicationController
   end
 
   def getVets
-    sql = "SELECT v.id, v.email, v.name, v.lastname FROM audits as a INNER JOIN owners as o ON a.horse_id = o.horse_id INNER JOIN users as v ON v.id=a.vet_id WHERE a.end_date IS NULL AND o.client_id = "+params[:id]
+    sql = "SELECT a.end_date, v.id, v.email, v.name, v.lastname, h.name as horse_name FROM audits as a INNER JOIN owners as o ON a.horse_id = o.horse_id INNER JOIN users as v ON v.id=a.vet_id INNER JOIN horses as h ON h.id=a.horse_id WHERE a.end_date IS NULL AND o.end_date IS NULL AND o.client_id = "+params[:id]
     @vets = ActiveRecord::Base.connection.execute(sql)
     render json: @vets, status: :created
   end

@@ -8,8 +8,13 @@ Rails.application.routes.draw do
       get '/:id/getCurrentOwner' => 'horses#getCurrentOwner', as: 'getCurrentOwner'
       get '/:id/getCurrentVet' => 'horses#getCurrentVet', as: 'getCurrentVet'
       get '/' => 'horses#index', as: 'horses'
+      get '/:id/historyOfOwners' => 'horses#historyOfOwners', as: 'historyOfOwners'
+      get '/:id/historyOfVets' => 'horses#historyOfVets', as: 'historyOfVets'
       post '/:id/sell' => 'horses#sell', as: 'sell'
       post '/:id/changeVet' => 'horses#changeVet', as: 'changeVet'
+      post '/:id/addVet' => 'horses#addVet', as: 'addVet'
+      post '/:id/deleteVet' => 'horses#deleteVet', as: 'deleteVet'
+
     end
     resource :users do
       get '/' => 'users#index', as: 'users'

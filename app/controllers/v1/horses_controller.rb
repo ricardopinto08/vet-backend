@@ -1,5 +1,5 @@
 class V1::HorsesController < ApplicationController
-  before_action :set_user, only: [:changeVet, :sell, :getCurrentOwner, :getVets, :getClients, :show, :destroy]
+  before_action :set_user, only: [:deleteVet, :addVet, :changeVet, :sell, :getCurrentOwner, :getVets, :getClients, :show, :destroy]
 
   def index
     @horses =Horse.all
@@ -12,7 +12,6 @@ class V1::HorsesController < ApplicationController
   end
 
   def create
-    puts "|||||||||||"
     @horse = Horse.new(horse_params)
     @vet = Vet.find_by_email(params[:emailVet])
     @client = Client.find_by_email(params[:emailClient])
@@ -40,12 +39,14 @@ class V1::HorsesController < ApplicationController
     @owners = Owner.where(horse_id:params[:id])
     @sorted = @owners.sort_by &:created_at
     @owner = @sorted.last
-    if @owner.client_id != params[:emailClient]
+    @client = Client.find_by_email(params[:emailClient])
+    if !@client.nil? && @owner.client_id != params[:emailClient]
       @owner.end_date=Time.now
       @owner.save
-      @client = Client.find_by_email(params[:emailClient])
       @horse.clients << @client
       render json: @client, status: :created
+    else
+      render json: { error: "Este correo no existe" }, status: :unauthorized
     end
   end
 
@@ -53,13 +54,25 @@ class V1::HorsesController < ApplicationController
     @audits = Audit.where(horse_id:params[:id])
     @sorted = @audits.sort_by &:created_at
     @audit = @sorted.last
-    if @audit.vet_id != params[:emailVet]
+    @vet = Vet.find_by_email(params[:emailVet])
+    if !@vet.nil? && @audit.vet_id != params[:emailVet]
       @audit.end_date=Time.now
       @audit.save
-      @vet = Vet.find_by_email(params[:emailVet])
       @horse.vets << @vet
       render json: @vet, status: :created
+    else
+      render json: { error: "Este correo no existe" }, status: :unauthorized
     end
+  end
+
+  def deleteVet
+    @audits = Audit.where(horse_id:params[:id])
+    @sorted = @audits.sort_by &:created_at
+    @audit = @sorted.last
+    @audit.vet_id != params[:emailVet]
+    @audit.end_date=Time.now
+    @audit.save
+    render json: @vet, status: :created
   end
 
   def destroy
@@ -72,15 +85,36 @@ class V1::HorsesController < ApplicationController
   end
 
   def getVets
-    @vets = @horse.vets
-    render json: @vets, status: :ok
+    sql = "SELECT users.id, users.email, users.name, users.lastname, audits.created_at FROM users INNER JOIN audits ON users.id = audits.vet_id WHERE audits.end_date IS NULL AND audits.horse_id = "+params[:id]
+    @vets = ActiveRecord::Base.connection.execute(sql)
+    render json: @vets, status: :created
   end
 
   def getClients
-    @clients = @horse.clients
-    render json: @clients, status: :ok
+    sql = "SELECT users.id, users.email, users.name, users.lastname, owners.created_at FROM users INNER JOIN owners ON users.id = owners.client_id WHERE owners.end_date IS NULL AND owners.horse_id = "+params[:id]
+    @clients = ActiveRecord::Base.connection.execute(sql)
+    render json: @clients, status: :created
   end
 
+  def addVet
+    @vet = Vet.find_by_email(params[:emailVet])
+    if !@vet.nil?
+      @horse.vets << @vet
+      render json: @horse, status: :created
+    end
+  end
+
+  def historyOfOwners
+    sql = "SELECT users.id, users.email, users.name, users.lastname, owners.created_at, owners.end_date FROM users INNER JOIN owners ON users.id = owners.client_id WHERE owners.horse_id = "+params[:id]
+    @clients = ActiveRecord::Base.connection.execute(sql)
+    render json: @clients, status: :created
+  end
+
+  def historyOfVets
+    sql = "SELECT users.id, users.email, users.name, users.lastname, audits.created_at, audits.end_date FROM users INNER JOIN audits ON users.id = audits.vet_id WHERE audits.horse_id = "+params[:id]
+    @clients = ActiveRecord::Base.connection.execute(sql)
+    render json: @clients, status: :created
+  end
 
   def set_user
     @horse = Horse.find(params[:id])
