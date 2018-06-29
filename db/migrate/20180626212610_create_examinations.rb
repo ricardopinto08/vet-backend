@@ -8,6 +8,14 @@ class CreateExaminations < ActiveRecord::Migration[5.2]
       t.string :address
       t.datetime :start_hour
       t.datetime :end_hour
+
+      t.float :current_weight
+      t.float :current_chest
+      t.float :current_umbilical
+      t.float :current_shoulder
+      t.float :current_olecranon
+      t.float :current_height
+      
       t.timestamps
     end
   end

@@ -110,7 +110,7 @@ class V1::HorsesController < ApplicationController
   end
 
   def getMedicalHistory
-    sql = "SELECT examinations.id, examinations.title, examinations.description, examinations.city, examinations.address, examinations.start_hour, examinations.end_hour, users.name as vet_name, users.lastname as vet_lastname, users.email as vet_email FROM horses INNER JOIN audits ON horses.id = audits.vet_id INNER JOIN examinations ON audits.id = examinations.audit_id INNER JOIN users ON users.id = audits.vet_id  WHERE audits.horse_id = "+params[:id]
+    sql = "SELECT examinations.id, examinations.title, examinations.description, examinations.city, examinations.address, examinations.start_hour, examinations.end_hour, users.name as vet_name, users.lastname as vet_lastname, users.email as vet_email FROM horses INNER JOIN audits ON horses.id = audits.horse_id INNER JOIN examinations ON audits.id = examinations.audit_id INNER JOIN users ON users.id = audits.vet_id  WHERE audits.horse_id = "+params[:id]
     @history = ActiveRecord::Base.connection.execute(sql)
     render json: @history, status: :created
   end
@@ -126,7 +126,8 @@ class V1::HorsesController < ApplicationController
   end
 
   def horse_params
-    params.require(:horse).permit(:name, :born_date, :emailVet, :emailClient)
+    params.require(:horse).permit(:name, :breed, :gender, :color, :born_date, :current_weight, :current_chest, :current_umbilical, :current_shoulder, :current_olecranon, :current_height, :born_weight, :born_chest, :born_umbilical, :born_shoulder, :born_olecranon, :born_height, :emailVet, :emailClient)
   end
+
 
 end

@@ -15,12 +15,20 @@ class V1::ExaminationsController < ApplicationController
     @audits = ActiveRecord::Base.connection.execute(sql)
     @auditId = @audits.first["id"]
     @audit = Audit.find(@auditId)
-    if @audits.count >0
+    if @audits.count > 0
       @examination = Examination.new(examination_params)
       @examination.audit_id = @auditId
       if @examination.save
         @audit.examinations << @examination
         @audit.save
+        @horse = Horse.find(@audit.horse_id)
+        @horse.current_weight = @examination.current_weight
+        @horse.current_chest = @examination.current_chest
+        @horse.current_umbilical = @examination.current_umbilical
+        @horse.current_shoulder = @examination.current_shoulder
+        @horse.current_olecranon = @examination.current_olecranon
+        @horse.current_height = @examination.current_height
+        @horse.save
         render json: @examination, status: :created
       else
         render json: @examination.errors, status: :unprocessable_entity
@@ -43,7 +51,7 @@ private
   end
 
   def examination_params
-    params.permit(:title, :description, :city, :address, :start_hour, :end_hour)
+    params.permit(:title, :description, :city, :address, :start_hour, :end_hour, :current_weight, :current_chest, :current_umbilical, :current_shoulder, :current_olecranon, :current_height)
   end
 
 end

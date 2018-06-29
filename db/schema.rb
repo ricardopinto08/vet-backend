@@ -38,6 +38,12 @@ ActiveRecord::Schema.define(version: 2018_06_26_212610) do
     t.string "address"
     t.datetime "start_hour"
     t.datetime "end_hour"
+    t.float "current_weight"
+    t.float "current_chest"
+    t.float "current_umbilical"
+    t.float "current_shoulder"
+    t.float "current_olecranon"
+    t.float "current_height"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["audit_id"], name: "index_examinations_on_audit_id"
@@ -45,7 +51,22 @@ ActiveRecord::Schema.define(version: 2018_06_26_212610) do
 
   create_table "horses", force: :cascade do |t|
     t.string "name"
+    t.string "breed"
+    t.string "gender"
+    t.string "color"
     t.datetime "born_date"
+    t.float "current_weight"
+    t.float "current_chest"
+    t.float "current_umbilical"
+    t.float "current_shoulder"
+    t.float "current_olecranon"
+    t.float "current_height"
+    t.float "born_weight"
+    t.float "born_chest"
+    t.float "born_umbilical"
+    t.float "born_shoulder"
+    t.float "born_olecranon"
+    t.float "born_height"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
