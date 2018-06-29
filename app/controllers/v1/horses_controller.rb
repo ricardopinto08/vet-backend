@@ -76,7 +76,6 @@ class V1::HorsesController < ApplicationController
   end
 
   def destroy
-    @horse = Horse.where(id:params[:id]).first
     if @horse.destroy
       head(:ok)
     else
@@ -108,6 +107,12 @@ class V1::HorsesController < ApplicationController
     sql = "SELECT users.id, users.email, users.name, users.lastname, owners.created_at, owners.end_date FROM users INNER JOIN owners ON users.id = owners.client_id WHERE owners.horse_id = "+params[:id]
     @clients = ActiveRecord::Base.connection.execute(sql)
     render json: @clients, status: :created
+  end
+
+  def getMedicalHistory
+    sql = "SELECT examinations.id, examinations.title, examinations.description, examinations.city, examinations.address, examinations.start_hour, examinations.end_hour, users.name as vet_name, users.lastname as vet_lastname, users.email as vet_email FROM horses INNER JOIN audits ON horses.id = audits.vet_id INNER JOIN examinations ON audits.id = examinations.audit_id INNER JOIN users ON users.id = audits.vet_id  WHERE audits.horse_id = "+params[:id]
+    @history = ActiveRecord::Base.connection.execute(sql)
+    render json: @history, status: :created
   end
 
   def historyOfVets

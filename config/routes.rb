@@ -10,6 +10,7 @@ Rails.application.routes.draw do
       get '/' => 'horses#index', as: 'horses'
       get '/:id/historyOfOwners' => 'horses#historyOfOwners', as: 'historyOfOwners'
       get '/:id/historyOfVets' => 'horses#historyOfVets', as: 'historyOfVets'
+      get '/:id/getMedicalHistory' => 'horses#getMedicalHistory', as: 'getMedicalHistory'
       post '/:id/sell' => 'horses#sell', as: 'sell'
       post '/:id/changeVet' => 'horses#changeVet', as: 'changeVet'
       post '/:id/addVet' => 'horses#addVet', as: 'addVet'
@@ -18,6 +19,9 @@ Rails.application.routes.draw do
     end
     resource :users do
       get '/' => 'users#index', as: 'users'
+    end
+    resource :examinations do
+      get '/' => 'examinations#index', as: 'examinations'
     end
     resource :clients do
       get '/:id/gethorses' => 'clients#getHorses', as: 'horse'
