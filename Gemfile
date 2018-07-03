@@ -28,6 +28,8 @@ gem 'simple_token_authentication', '~> 1.0'
 gem 'devise'
 gem 'devise-jwt'
 
+gem 'carrierwave-base64'
+
 gem 'jwt'
 
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible

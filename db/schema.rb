@@ -10,10 +10,31 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_06_26_212610) do
+ActiveRecord::Schema.define(version: 2018_07_03_145705) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "annexeds", force: :cascade do |t|
+    t.bigint "examination_id"
+    t.datetime "date"
+    t.string "title"
+    t.string "description"
+    t.string "city"
+    t.string "address"
+    t.datetime "start_hour"
+    t.datetime "end_hour"
+    t.float "current_weight"
+    t.float "current_chest"
+    t.float "current_umbilical"
+    t.float "current_shoulder"
+    t.float "current_olecranon"
+    t.float "current_height"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "image"
+    t.index ["examination_id"], name: "index_annexeds_on_examination_id"
+  end
 
   create_table "audits", force: :cascade do |t|
     t.bigint "horse_id"

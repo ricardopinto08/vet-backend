@@ -1,5 +1,5 @@
 class V1::ExaminationsController < ApplicationController
-  before_action :set_user, only: [:show, :destroy]
+  before_action :set_examination, only: [:getAnnexeds, :show, :destroy]
 
   def index
     @examinations = Examination.all
@@ -34,6 +34,10 @@ class V1::ExaminationsController < ApplicationController
         render json: @examination.errors, status: :unprocessable_entity
       end
     end
+  end
+
+  def getAnnexeds
+    render json: @examination.annexeds, status: :created
   end
 
 

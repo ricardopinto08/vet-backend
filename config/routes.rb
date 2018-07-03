@@ -15,13 +15,16 @@ Rails.application.routes.draw do
       post '/:id/changeVet' => 'horses#changeVet', as: 'changeVet'
       post '/:id/addVet' => 'horses#addVet', as: 'addVet'
       post '/:id/deleteVet' => 'horses#deleteVet', as: 'deleteVet'
-
     end
     resource :users do
       get '/' => 'users#index', as: 'users'
     end
     resource :examinations do
       get '/' => 'examinations#index', as: 'examinations'
+      get '/:id/getAnnexeds' => 'examinations#getAnnexeds', as: 'getAnnexeds'
+    end
+    resource :annexeds do
+      get '/' => 'annexeds#index', as: 'annexeds'
     end
     resource :clients do
       get '/:id/gethorses' => 'clients#getHorses', as: 'horse'

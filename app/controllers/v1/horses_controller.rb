@@ -66,7 +66,8 @@ class V1::HorsesController < ApplicationController
   end
 
   def deleteVet
-    @audits = Audit.where(horse_id:params[:id])
+    @vet = Vet.find_by_email(params[:emailVet])
+    @audits = Audit.where(horse_id:params[:id]).where(vet_id:@vet.id)
     @sorted = @audits.sort_by &:created_at
     @audit = @sorted.last
     @audit.vet_id != params[:emailVet]
@@ -110,7 +111,7 @@ class V1::HorsesController < ApplicationController
   end
 
   def getMedicalHistory
-    sql = "SELECT examinations.id, examinations.title, examinations.description, examinations.city, examinations.address, examinations.start_hour, examinations.end_hour, users.name as vet_name, users.lastname as vet_lastname, users.email as vet_email FROM horses INNER JOIN audits ON horses.id = audits.horse_id INNER JOIN examinations ON audits.id = examinations.audit_id INNER JOIN users ON users.id = audits.vet_id  WHERE audits.horse_id = "+params[:id]
+    sql = "SELECT audits.id as audit_id, examinations.id, examinations.title, examinations.description, examinations.city, examinations.address, examinations.start_hour, examinations.end_hour, users.name as vet_name, users.lastname as vet_lastname, users.email as vet_email FROM horses INNER JOIN audits ON horses.id = audits.horse_id INNER JOIN examinations ON audits.id = examinations.audit_id INNER JOIN users ON users.id = audits.vet_id  WHERE audits.horse_id = "+params[:id]
     @history = ActiveRecord::Base.connection.execute(sql)
     render json: @history, status: :created
   end
