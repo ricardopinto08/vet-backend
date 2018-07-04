@@ -20,10 +20,12 @@ Rails.application.routes.draw do
       get '/' => 'users#index', as: 'users'
     end
     resource :examinations do
+      get '/:id', to: 'examinations#show', as: 'examination'
       get '/' => 'examinations#index', as: 'examinations'
       get '/:id/getAnnexeds' => 'examinations#getAnnexeds', as: 'getAnnexeds'
     end
     resource :annexeds do
+      get '/:id', to: 'annexeds#show', as: 'annexed'
       get '/' => 'annexeds#index', as: 'annexeds'
     end
     resource :clients do

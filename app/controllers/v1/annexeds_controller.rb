@@ -7,7 +7,7 @@ class V1::AnnexedsController < ApplicationController
   end
 
   def show
-    render json: @annexeds, status: :ok
+    render json: @annexed, status: :ok
   end
 
   def create
@@ -17,6 +17,10 @@ class V1::AnnexedsController < ApplicationController
     @examination = Examination.find(params[:examination_id])
     @examination.annexeds << @annexed
     @examination.save
+    puts "------"
+    puts @audit.id
+    puts @audit["id"]
+    puts @horse.id
     @horse = Horse.find(@audit["horse_id"])
     @horse.current_weight = @annexed.current_weight
     @horse.current_chest = @annexed.current_chest
