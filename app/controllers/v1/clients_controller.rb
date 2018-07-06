@@ -62,6 +62,8 @@ class V1::ClientsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def user_params
-      return params.permit(:name, :lastname, :email, :password, :password_confirmation)
+      return params.permit(:name, :lastname, :email, :password, :password_confirmation,
+        info_attributes: [:hatchery]
+      )
     end
 end
