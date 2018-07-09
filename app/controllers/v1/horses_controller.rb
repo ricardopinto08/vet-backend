@@ -107,7 +107,7 @@ class V1::HorsesController < ApplicationController
   end
 
   def historyOfOwners
-    sql = "SELECT users.id, users.email, users.name, users.lastname, owners.created_at, owners.end_date FROM users INNER JOIN owners ON users.id = owners.client_id WHERE owners.horse_id = "+params[:id]
+    sql = "SELECT users.id, users.email, users.phone, users.name, users.lastname, owners.created_at, owners.end_date FROM users INNER JOIN owners ON users.id = owners.client_id WHERE owners.horse_id = "+params[:id]
     @clients = ActiveRecord::Base.connection.execute(sql)
     render json: @clients, status: :created
   end
@@ -119,7 +119,7 @@ class V1::HorsesController < ApplicationController
   end
 
   def historyOfVets
-    sql = "SELECT users.id, users.email, users.name, users.lastname, audits.created_at, audits.end_date FROM users INNER JOIN audits ON users.id = audits.vet_id WHERE audits.horse_id = "+params[:id]
+    sql = "SELECT users.id, users.email, users.phone, users.name, users.lastname, audits.created_at, audits.end_date FROM users INNER JOIN audits ON users.id = audits.vet_id WHERE audits.horse_id = "+params[:id]
     @clients = ActiveRecord::Base.connection.execute(sql)
     render json: @clients, status: :created
   end
