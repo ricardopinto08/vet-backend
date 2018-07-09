@@ -134,7 +134,7 @@ ActiveRecord::Schema.define(version: 2018_07_05_221619) do
     t.string "authentication_token", limit: 30
     t.string "name"
     t.string "lastname"
-    t.integer "phone"
+    t.bigint "phone"
     t.string "type"
     t.index ["authentication_token"], name: "index_users_on_authentication_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
