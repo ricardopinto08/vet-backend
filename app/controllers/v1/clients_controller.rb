@@ -15,9 +15,15 @@ class V1::ClientsController < ApplicationController
 
   # POST /clients
   def create
+    @info = ClientInfo.new(hatchery:user_attr[:hatchery])
     @client = Client.new(user_params)
-    if @client.save
-      render json: @client, status: :created
+    @info.client=@client
+    if @client.save &&  @info.save
+      render json: {
+        client: @client,
+        hatchery: @client.info
+
+        }, status: :created
     else
       render json: @client.errors, status: :unprocessable_entity
     end
@@ -62,8 +68,10 @@ class V1::ClientsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def user_params
-      return params.permit(:name, :lastname, :email, :password, :password_confirmation,
-        info_attributes: [:hatchery]
-      )
+      return params.permit(:name, :lastname, :phone, :email, :password, :password_confirmation)
+    end
+
+    def user_attr
+      return params.permit(:name, :lastname, :phone, :email, :password, :password_confirmation, :hatchery)
     end
 end

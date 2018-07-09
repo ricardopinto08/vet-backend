@@ -6,6 +6,8 @@ class CreateHorses < ActiveRecord::Migration[5.2]
       t.string :gender
       t.string :color
       t.datetime :born_date
+      t.string :mom
+      t.string :dad
 
       t.float :current_weight
       t.float :current_chest

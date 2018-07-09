@@ -55,7 +55,6 @@ ActiveRecord::Schema.define(version: 2018_07_05_221619) do
   end
 
   create_table "clients", force: :cascade do |t|
-    t.string "hatchery"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -85,6 +84,8 @@ ActiveRecord::Schema.define(version: 2018_07_05_221619) do
     t.string "gender"
     t.string "color"
     t.datetime "born_date"
+    t.string "mom"
+    t.string "dad"
     t.float "current_weight"
     t.float "current_chest"
     t.float "current_umbilical"
@@ -133,6 +134,7 @@ ActiveRecord::Schema.define(version: 2018_07_05_221619) do
     t.string "authentication_token", limit: 30
     t.string "name"
     t.string "lastname"
+    t.integer "phone"
     t.string "type"
     t.index ["authentication_token"], name: "index_users_on_authentication_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
@@ -144,5 +146,4 @@ ActiveRecord::Schema.define(version: 2018_07_05_221619) do
     t.datetime "updated_at", null: false
   end
 
-  add_foreign_key "client_infos", "clients"
 end

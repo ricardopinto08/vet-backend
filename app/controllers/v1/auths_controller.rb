@@ -6,11 +6,20 @@ module V1
 
       if token_command.success?
         @user = User.find_by_email(params[:user])
-        render json: {
-           token: token_command.result,
-           type: @user.type,
-           user: @user
-         }
+        if @user.type === "Client"
+          render json: {
+             token: token_command.result,
+             type: @user.type,
+             user: @user,
+             hatchery: @user.info.hatchery,
+           }
+        else
+          render json: {
+             token: token_command.result,
+             type: @user.type,
+             user: @user
+           }
+         end
       else
         render json: { error: token_command.errors }, status: :unauthorized
       end

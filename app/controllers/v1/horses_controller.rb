@@ -12,9 +12,9 @@ class V1::HorsesController < ApplicationController
   end
 
   def create
-    @horse = Horse.new(horse_params)
-    @vet = Vet.find_by_email(params[:emailVet])
-    @client = Client.find_by_email(params[:emailClient])
+    @horse = Horse.new(horse_attr)
+    @vet = Vet.find_by_email(horse_params[:emailVet])
+    @client = Client.find_by_email(horse_params[:emailClient])
     @horse.vets << @vet
     @horse.clients << @client
     @horse.save
@@ -126,8 +126,13 @@ class V1::HorsesController < ApplicationController
     @horse = Horse.find(params[:id])
   end
 
+private
   def horse_params
-    params.require(:horse).permit(:name, :breed, :gender, :color, :born_date, :current_weight, :current_chest, :current_umbilical, :current_shoulder, :current_olecranon, :current_height, :born_weight, :born_chest, :born_umbilical, :born_shoulder, :born_olecranon, :born_height, :emailVet, :emailClient)
+    params.require(:horse).permit(:name, :breed, :mom, :dad, :gender, :color, :born_date, :current_weight, :current_chest, :current_umbilical, :current_shoulder, :current_olecranon, :current_height, :born_weight, :born_chest, :born_umbilical, :born_shoulder, :born_olecranon, :born_height, :emailVet, :emailClient)
+  end
+
+  def horse_attr
+    params.require(:horse).permit(:name, :breed, :mom, :dad, :gender, :color, :born_date, :current_weight, :current_chest, :current_umbilical, :current_shoulder, :current_olecranon, :current_height, :born_weight, :born_chest, :born_umbilical, :born_shoulder, :born_olecranon, :born_height)
   end
 
 
