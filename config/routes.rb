@@ -23,6 +23,7 @@ Rails.application.routes.draw do
       get '/:id', to: 'examinations#show', as: 'examination'
       get '/' => 'examinations#index', as: 'examinations'
       get '/:id/getAnnexeds' => 'examinations#getAnnexeds', as: 'getAnnexeds'
+      get '/:id/getNumAnnexeds' => 'examinations#getNumAnnexeds', as: 'getNumAnnexeds'
     end
     resource :annexeds do
       get '/:id', to: 'annexeds#show', as: 'annexed'

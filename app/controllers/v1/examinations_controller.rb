@@ -40,6 +40,10 @@ class V1::ExaminationsController < ApplicationController
     render json: @examination.annexeds, status: :created
   end
 
+  def getNumAnnexeds
+    render json: @examination.annexeds.count, status: :created
+  end
+
 
   def destroy
     @examination.destroy
