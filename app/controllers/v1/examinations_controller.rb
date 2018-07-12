@@ -1,5 +1,5 @@
 class V1::ExaminationsController < ApplicationController
-  before_action :set_examination, only: [:getAnnexeds, :show, :destroy]
+  before_action :set_examination, only: [:getNumAnnexeds, :getAnnexeds, :show, :destroy]
 
   def index
     @examinations = Examination.all
