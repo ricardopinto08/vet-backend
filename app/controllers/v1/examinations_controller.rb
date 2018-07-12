@@ -37,7 +37,9 @@ class V1::ExaminationsController < ApplicationController
   end
 
   def getAnnexeds
-    render json: @examination.annexeds, status: :created
+    sql = "SELECT annexeds.address, annexeds.city, annexeds.created_at, annexeds.current_chest, annexeds.current_height, annexeds.current_olecranon, annexeds.current_shoulder, annexeds.current_weight, annexeds.date, annexeds.description, annexeds.end_hour, annexeds.examination_id, annexeds.id, annexeds.image, annexeds.start_hour, annexeds.title, annexeds.updated_at, users.name, users.lastname  FROM annexeds INNER JOIN examinations ON annexeds.examination_id = examinations.id  INNER JOIN audits ON examinations.audit_id = audits.id INNER JOIN users ON audits.vet_id = users.id WHERE examinations.id="+@examination.id.to_s
+    @annexeds = ActiveRecord::Base.connection.execute(sql)
+    render json: @annexeds, status: :ok
   end
 
   def getNumAnnexeds

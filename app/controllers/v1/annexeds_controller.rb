@@ -11,7 +11,8 @@ class V1::AnnexedsController < ApplicationController
   end
 
   def create
-    sql = "SELECT * FROM audits INNER JOIN examinations ON audits.id = examinations.audit_id  WHERE examinations.id = "+params[:examination_id]+" AND audits.end_date IS NULL"
+    puts annexed_params[:examination_id]
+    sql = "SELECT * FROM audits INNER JOIN examinations ON audits.id = examinations.audit_id  WHERE examinations.id = "+annexed_params[:examination_id]+" AND audits.end_date IS NULL"
     @audit = ActiveRecord::Base.connection.execute(sql).first
     @annexed = Annexed.new(annexed_params)
     @examination = Examination.find(params[:examination_id])
